@@ -47,7 +47,7 @@ public class CandyFrame extends VBox {
 						Element element = cell.getContent();
 						Image image = images.getImage(element);
 						timeLine.getKeyFrames().add(new KeyFrame(frameTime, e -> boardPanel.setImage(finalI, finalJ, null)));
-						timeLine.getKeyFrames().add(new KeyFrame(frameTime, e -> boardPanel.setImage(finalI, finalJ, image)));
+						timeLine.getKeyFrames().add(new KeyFrame(frameTime, e -> boardPanel.setImage(finalI, finalJ, image, element.render())));
 					}
 					frameTime = frameTime.add(frameGap);
 				}
@@ -70,7 +70,7 @@ public class CandyFrame extends VBox {
 				if (newPoint != null) {
 					System.out.println("Get second = " +  newPoint);
 					game().tryMove((int)lastPoint.getX(), (int)lastPoint.getY(), (int)newPoint.getX(), (int)newPoint.getY());
-					String message = ((Long)game().getScore()).toString();
+					String message = game.getState();
 					if (game().isFinished()) {
 						if (game().playerWon()) {
 							message = message + " Finished - Player Won!";

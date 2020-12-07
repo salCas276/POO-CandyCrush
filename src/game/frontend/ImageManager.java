@@ -1,14 +1,6 @@
 package game.frontend;
 
-import game.backend.element.Bomb;
-import game.backend.element.Candy;
-import game.backend.element.CandyColor;
-import game.backend.element.Element;
-import game.backend.element.HorizontalStripedCandy;
-import game.backend.element.Nothing;
-import game.backend.element.VerticalStripedCandy;
-import game.backend.element.Wall;
-import game.backend.element.WrappedCandy;
+import game.backend.element.*;
 import javafx.scene.image.Image;
 
 import java.util.HashMap;
@@ -42,6 +34,12 @@ public class ImageManager {
 			hc.setColor(cc);
 			images.put(hc.getFullKey(),  new Image(IMAGE_PATH + cc.toString().toLowerCase() + "HStripped.png"));
 		}
+
+		//TODO CHECk
+		for (FruitType f: FruitType.values()) {
+			images.put(f+"-FRUIT",  new Image(IMAGE_PATH + f + ".png"));
+		}
+
 	}
 
 	public Image getImage(Element e) {

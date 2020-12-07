@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class Grid {
-	
+
 	public static final int SIZE = 9;
 
 	private Cell[][] g = new Cell[SIZE][SIZE];
@@ -23,18 +23,18 @@ public abstract class Grid {
 	private List<GameListener> listeners = new ArrayList<>();
 	private MoveMaker moveMaker;
 	private FigureDetector figureDetector;
-	
+
 	protected abstract GameState newState();
 	protected abstract void fillCells();
-	
+
 	protected Cell[][] g() {
 		return g;
 	}
-	
+
 	protected GameState state(){
 		return state;
 	}
-	
+
 	public void initialize() {
 		moveMaker = new MoveMaker(this);
 		figureDetector = new FigureDetector(this);
@@ -46,12 +46,12 @@ public abstract class Grid {
 		}
 		fillCells();
 		fallElements();
-	}	
+	}
 
 	public Element get(int i, int j) {
 		return g[i][j].getContent();
 	}
-	
+
 	public Cell getCell(int i, int j) {
 		return g[i][j];
 	}
@@ -66,22 +66,22 @@ public abstract class Grid {
 						i = SIZE;
 						j = -1;
 						break;
-					} 
+					}
 				}
 				j++;
-			}	
+			}
 			i--;
 		}
 	}
-	
+
 	public void clearContent(int i, int j) {
 		g[i][j].clearContent();
 	}
-	
+
 	public void setContent(int i, int j, Element e) {
 		g[i][j].setContent(e);
 	}
-	
+
 	public boolean tryMove(int i1, int j1, int i2, int j2) {
 		Move move = moveMaker.getMove(i1, j1, i2, j2);
 		swapContent(i1, j1, i2, j2);
@@ -93,8 +93,8 @@ public abstract class Grid {
 			swapContent(i1, j1, i2, j2);
 			return false;
 		}
-	}	
-	
+	}
+
 	public Figure tryRemove(Cell cell) {
 		if (gMap.containsKey(cell)) {
 			Point p = gMap.get(cell);
@@ -106,7 +106,7 @@ public abstract class Grid {
 		}
 		return null;
 	}
-	
+
 	private void removeFigure(int i, int j, Figure f) {
 		CandyColor color = ((Candy)get(i, j)).getColor();
 		if (f.hasReplacement()) {
@@ -125,16 +125,16 @@ public abstract class Grid {
 		g[i2][j2].setContent(e);
 		wasUpdated();
 	}
-	
+
 	public GameState createState() {
 		this.state = newState();
 		return this.state;
 	}
-	
+
 	public void addListener(GameListener listener) {
 		listeners.add(listener);
 	}
-	
+
 	public void wasUpdated(){
 		if (listeners.size() > 0) {
 			for (GameListener gl: listeners) {
@@ -142,7 +142,7 @@ public abstract class Grid {
 			}
 		}
 	}
-	
+
 	public void cellExplosion(Element e) {
 		for (GameListener gl: listeners) {
 			gl.cellExplosion(e);

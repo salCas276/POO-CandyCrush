@@ -17,17 +17,18 @@ import java.util.List;
 import java.util.Map;
 
 public class Level2 extends Grid {
-	
-	private static int REQUIRED_SCORE = 5000; 
-	private static int MAX_MOVES = 20;
-	private static int TIMEBOMBS = 5;
+
+	private static int REQUIRED_SCORE = 5000;
+	private static int MAX_MOVES = 10;
+	private static int TIMEBOMBS = 3;
 	private static int TIMEBOMB_INIT_COUNTER = 10;
 
 	List<TimebombCandy> timebombs = new ArrayList<>();
-	private int tbRemaining = TIMEBOMB_INIT_COUNTER;
+	private int tbRemaining = TIMEBOMBS;
 	private Cell wallCell;
 	private PriorityCandyGeneratorCell candyGenCell;
-	
+
+
 	@Override
 	protected GameState newState() {
 		return new Level2State(REQUIRED_SCORE, MAX_MOVES);
@@ -35,12 +36,12 @@ public class Level2 extends Grid {
 
 	@Override
 	protected void fillCells() {
-		
+
 		wallCell = new Cell(this);
 		wallCell.setContent(new Wall());
 
 		candyGenCell = new PriorityCandyGeneratorCell(this);
-		
+
 		//corners
 		g()[0][0].setAround(candyGenCell, g()[1][0], wallCell, g()[0][1]);
 		g()[0][SIZE-1].setAround(candyGenCell, g()[1][SIZE-1], g()[0][SIZE-2], wallCell);
@@ -62,7 +63,7 @@ public class Level2 extends Grid {
 		//right line cells
 		for (int i = 1; i < SIZE-1; i++) {
 			g()[i][SIZE-1].setAround(g()[i-1][SIZE-1],g()[i+1][SIZE-1], g()[i][SIZE-2], wallCell);
-		}		
+		}
 		//central cells
 		for (int i = 1; i < SIZE-1; i++) {
 			for (int j = 1; j < SIZE-1; j++) {
@@ -70,32 +71,39 @@ public class Level2 extends Grid {
 			}
 		}
 	}
-	
+
+	//TODO: ADDER NO ESTA PARA NADA CHEQUEADO
+	private TimebombCandy adder;
+
 	@Override
 	public boolean tryMove(int i1, int j1, int i2, int j2) {
 		boolean ret;
 		if (ret = super.tryMove(i1, j1, i2, j2)) {
 			state().addMove();
-			if (state().getMoves() % 4 == 0 && tbRemaining > 0) {
+			//TODO: Por que no eliminamos los inactivos?
+			for(TimebombCandy tb: timebombs) {
+				tb.decrement();
+			}
+			if (adder != null) {
+				timebombs.add(adder);
+				adder = null;
+			}
+			if ( tbRemaining > 0 && state().getMoves() % 3 == 0) {
 				TimebombCandy newTB = new TimebombCandy(TIMEBOMB_INIT_COUNTER);
 				candyGenCell.addToQueue(newTB);
-				timebombs.add(newTB);
+				adder = newTB;
 				tbRemaining --;
-				for(TimebombCandy tb: timebombs) {
-					tb.decrement();
-				}
 			}
-
 		}
 		return ret;
 	}
-	
+
 	private class Level2State extends GameState {
 
 		private long requiredScore;
 		private long maxMoves;
 		private int timebombsRemaining = TIMEBOMB_INIT_COUNTER;
-		
+
 		public Level2State(long requiredScore, int maxMoves) {
 			this.requiredScore = requiredScore;
 			this.maxMoves = maxMoves;
@@ -118,6 +126,19 @@ public class Level2 extends Grid {
 				return true;
 			}
 			return false;
+		}
+
+		private int lowestTimebombCount () {
+			int i = TIMEBOMB_INIT_COUNTER;
+			for (TimebombCandy tb: timebombs) {
+				if (tb.isActive() && tb.getCount() < i) i = tb.getCount();
+			}
+			return i;
+		}
+
+		@Override
+		public String toString() {
+			return super.toString()+" // MOVES: "+(maxMoves-getMoves())+" // BOMB IN: "+(timebombs.isEmpty()?"-":lowestTimebombCount());
 		}
 	}
 

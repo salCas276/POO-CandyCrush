@@ -1,34 +1,36 @@
 package game.backend.element;
 
 public class Candy extends Element {
-	
+
 	private CandyColor color;
-	
+
 	public Candy() {
+		int i = (int)(Math.random() * CandyColor.values().length);
+		setColor(CandyColor.values()[i]);
 	}
-	
+
 	public Candy(CandyColor color) {
 		this.color = color;
 	}
-	
+
 	public CandyColor getColor() {
 		return color;
 	}
-	
+
 	public void setColor(CandyColor color) {
 		this.color = color;
 	}
-	
+
 	@Override
 	public boolean isMovable() {
 		return true;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return ((color == null) ? 0 : color.hashCode());
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -40,17 +42,17 @@ public class Candy extends Element {
 			return false;
 		return true;
 	}
-	
+
 	@Override
 	public String getFullKey() {
 		return color.toString() + "-CANDY";
 	}
-	
+
 	@Override
 	public String getKey() {
 		return "CANDY";
 	}
-	
+
 	@Override
 	public long getScore() {
 		return 50;
