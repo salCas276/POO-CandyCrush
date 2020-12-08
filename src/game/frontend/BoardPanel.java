@@ -6,6 +6,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 
+import java.util.List;
+
 public class BoardPanel extends TilePane {
 
 	private StackPane[][] cells;
@@ -23,14 +25,13 @@ public class BoardPanel extends TilePane {
 			}
 		}
 	}
-
-	public void setImage(int row, int column, Image image, Node render) {
-		setImage(row, column, image);
-		if ( render != null ) cells[row][column].getChildren().add(render);
-	}
-
+	
 	public void setImage(int row, int column, Image image) {
 		cells[row][column].getChildren().add(new ImageView(image));
+	}
+
+	public void setEffect(int row, int column, Node n) {
+		if ( n != null ) cells[row][column].getChildren().add(n);
 	}
 
 }

@@ -43,7 +43,7 @@ public class ImageManager {
 	}
 
 	public Image getImage(Element e) {
-		return images.get(e.getFullKey());
+		return images.getOrDefault(e.getFullKey(), images.get(new Nothing().getFullKey()));
 	}
 
 }

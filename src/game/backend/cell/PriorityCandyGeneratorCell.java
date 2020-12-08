@@ -22,7 +22,7 @@ public class PriorityCandyGeneratorCell extends CandyGeneratorCell {
             return priorities.pop();
     }
 
-    public void addToQueue(Element adder) {
+    public void addToStack(Element adder) {
         priorities.push(adder);
     }
 }

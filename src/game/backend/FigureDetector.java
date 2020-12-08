@@ -7,13 +7,13 @@ import game.backend.element.Element;
 import java.awt.Point;
 
 public class FigureDetector {
-
+	
 	private Grid grid;
-
+	
 	public FigureDetector(Grid grid) {
 		this.grid = grid;
 	}
-
+	
 	public Figure checkFigure(int i, int j) {
 		int acum = readCheckpoints(i, j);
 		if (acum > 0) {
@@ -25,7 +25,7 @@ public class FigureDetector {
 		}
 		return null;
 	}
-
+	
 	private int readCheckpoints(int i, int j) {
 		Element curr = grid.get(i,j);
 		int acum = 0;
@@ -40,7 +40,7 @@ public class FigureDetector {
 		}
 		return acum;
 	}
-
+	
 	public void removeFigure(int i, int j, Figure f) {
 		CandyColor color = ((Candy)grid.get(i, j)).getColor();
 		grid.clearContent(i, j);
@@ -51,5 +51,5 @@ public class FigureDetector {
 			grid.clearContent(i + p.x, j + p.y);
 		}
 	}
-
+	
 }

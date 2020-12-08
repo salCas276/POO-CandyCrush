@@ -20,7 +20,7 @@ public class Level2 extends GenericLevel {
 	private static int TIMEBOMB_INIT_COUNTER = 10;
 
 	Set<TimebombCandy> timebombs = new HashSet<>();
-	private int tbRemaining = TIMEBOMBS;
+	private int tbRemaining = TIMEBOMBS; //Cantidad de bombas que queda por generar
 
 	private PriorityCandyGeneratorCell candyGenCell = new PriorityCandyGeneratorCell(this);
 
@@ -54,7 +54,7 @@ public class Level2 extends GenericLevel {
 			}
 			if ( tbRemaining > 0 && state().getMoves() % 3 == 0) {
 				TimebombCandy newTB = new TimebombCandy(TIMEBOMB_INIT_COUNTER);
-				candyGenCell.addToQueue(newTB);
+				candyGenCell.addToStack(newTB);
 				adder = newTB;
 			}
 			timebombs.removeIf((t)->!t.isActive());

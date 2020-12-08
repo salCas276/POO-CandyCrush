@@ -2,6 +2,7 @@ package game.backend.element;
 
 public class Fruit extends Element {
 
+
     @Override
     public boolean isBoomable() {
         return false;
@@ -13,7 +14,8 @@ public class Fruit extends Element {
         return true;
     }
 
-    public Fruit () {
+    public Fruit ()
+    {
         int i = (int)(Math.random() * FruitType.values().length);
         fruitType = FruitType.values()[i];
     }
@@ -27,6 +29,5 @@ public class Fruit extends Element {
     public String getFullKey() {
         return fruitType.toString()+"-"+getKey();
     }
-    //No implementa equals porque cada fruta es unica en lo ojos de la funcionalidad
 
 }

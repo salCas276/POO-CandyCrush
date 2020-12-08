@@ -6,26 +6,38 @@ import javafx.scene.paint.Color;
 
 public class TimebombCandy extends NumerableCandy {
 
-    //TODO: esta bien el flag?
+    private boolean active;
 
     public TimebombCandy(int count) {
-        super(count, Color.ORANGERED);
+        super(count);
+        this.active = true;
+
     }
 
     public void decrement() {
-        setCount( getCount() - (isActive()?1:0) );
+        if (isActive()) setCount( getCount() - 1 );
     }
-
-
 
     public boolean hasExploded() {
         return getCount() == 0;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+    public void turnOff() {
+        this.active  = false;
     }
 
     @Override
     public Direction[] explode() {
         turnOff();
         return super.explode();
+    }
+
+    @Override
+    public String getRenderKey() {
+        return Color.ORANGERED+"_"+super.getRenderKey();
     }
 
 }

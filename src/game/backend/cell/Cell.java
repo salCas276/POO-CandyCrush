@@ -3,19 +3,20 @@ package game.backend.cell;
 import game.backend.Grid;
 import game.backend.element.Element;
 import game.backend.element.Nothing;
+import game.backend.Renderable;
 import game.backend.move.Direction;
 
-public class Cell {
-
+public class Cell implements Renderable<String> {
+	
 	private Grid grid;
 	private Cell[] around = new Cell[Direction.values().length];
 	private Element content;
-
+	
 	public Cell(Grid grid) {
 		this.grid = grid;
 		this.content = new Nothing();
 	}
-
+	
 	public void setAround(Cell up, Cell down, Cell left, Cell right) {
 		this.around[Direction.UP.ordinal()] = up;
 		this.around[Direction.DOWN.ordinal()] = down;
@@ -26,11 +27,11 @@ public class Cell {
 	public boolean hasFloor() {
 		return !around[Direction.DOWN.ordinal()].isEmpty();
 	}
-
+	
 	public boolean isMovable(){
 		return content.isMovable();
 	}
-
+	
 	public boolean isEmpty() {
 		return !content.isSolid();
 	}
@@ -38,19 +39,19 @@ public class Cell {
 	public Element getContent() {
 		return content;
 	}
-
+	
 	public void clearContent() {
-		if (content.isMovable()) {
+		if (content.isMovable() && content.isBoomable()) {
 			Direction[] explosionCascade = content.explode();
 			grid.cellExplosion(content);
 			this.content = new Nothing();
 			if (explosionCascade != null) {
-				expandExplosion(explosionCascade);
+				expandExplosion(explosionCascade); 
 			}
 			this.content = new Nothing();
 		}
 	}
-
+	
 	private void expandExplosion(Direction[] explosion) {
 		for(Direction d: explosion) {
 			this.around[d.ordinal()].explode(d);
@@ -58,13 +59,11 @@ public class Cell {
 	}
 
 	private void explode(Direction d) {
-		if(content.isBoomable())
-			clearContent();
-
+		clearContent();
 		if (this.around[d.ordinal()] != null)
 			this.around[d.ordinal()].explode(d);
 	}
-
+	
 	public Element getAndClearContent() {
 		if (content.isMovable()) {
 			Element ret = content;
@@ -86,12 +85,21 @@ public class Cell {
 				Cell down = around[Direction.DOWN.ordinal()];
 				return down.fallUpperContent();
 			}
-		}
+		} 
 		return false;
 	}
-
+	
 	public void setContent(Element content) {
 		this.content = content;
 	}
 
+	@Override
+	public String getRenderData() {
+		return "";
+	}
+
+	@Override
+	public String getRenderKey() {
+		return "NO_EFFECT";
+	}
 }

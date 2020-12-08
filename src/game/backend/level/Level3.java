@@ -40,7 +40,7 @@ public class Level3 extends GenericLevel {
 		if (isMoveValid) {
 			if ( fruitsRemaining > 0 && state().getMoves() % fruitGap == 0) {
 				Fruit newFruit = new Fruit();
-				candyGenCell.addToQueue(newFruit);
+				candyGenCell.addToStack(newFruit);
 				fruits.add(newFruit);
 				fruitsRemaining --;
 			}
